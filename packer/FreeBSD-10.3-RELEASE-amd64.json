@@ -9,12 +9,22 @@
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "1000s",
       "guest_os_type": "FreeBSD_64",
+      "hard_drive_interface": "sata",
+      "iso_interface": "sata",
       "headless": "true",
       "shutdown_command": "echo 'shutdown -p now' | sudo su -",
       "boot_wait": "10s",
       "http_directory": "http",
       "disk_size": 20480,
       "vboxmanage": [
+        [
+          "storagectl",
+          "{{.Name}}",
+          "--name",
+          "SATA Controller",
+          "--hostiocache",
+          "on"
+	],
         [
           "modifyvm",
           "{{.Name}}",

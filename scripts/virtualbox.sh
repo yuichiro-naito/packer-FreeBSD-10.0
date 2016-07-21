@@ -11,6 +11,7 @@ vboxservice_enable="YES"
 EOF
 
 cat <<'EOF' >> /boot/loader.conf
+autoboot_delay="2"
 if_vtnet_load="YES"
 vboxdrv_load="YES"
 virtio_balloon_load="YES"
