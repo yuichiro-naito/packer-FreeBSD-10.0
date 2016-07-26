@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pkg install -y sudo 
+pkg install -y sudo lv
 
 patch -d /usr/local/etc <<__EOS__
 --- sudoers.org 2016-06-01 14:53:51.336859624 +0900
