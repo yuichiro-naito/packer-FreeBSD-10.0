@@ -2,7 +2,7 @@
 
 . /root/.profile
 
-pkg install -y virtualbox-ose-additions
+pkg install -y virtualbox-ose-additions-nox11
 
 cat <<'EOF' >> /etc/rc.conf
 
