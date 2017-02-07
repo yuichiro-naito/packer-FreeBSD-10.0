@@ -1,5 +1,12 @@
 {
-  "builders": [
+    "variables": {
+	"NAME_SERVER" : "8.8.8.8",
+	"HTTP_PROXY"  : "{{env `HTTP_PROXY`}}",
+	"HTTPS_PROXY" : "{{env `HTTPS_PROXY`}}",
+	"NO_PROXY"    : "{{env `NO_PROXY`}}"
+    },
+
+    "builders": [
     {
       "type": "virtualbox-iso",
       "iso_url": "http://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/ISO-IMAGES/11.0/FreeBSD-11.0-RELEASE-amd64-disc1.iso",
@@ -56,6 +63,10 @@
         "mdmfs -s 20m md2 /mnt<enter>",
         "dhclient -l /tmp/dhclient.lease.em0 em0<enter><wait5>",
         "fetch -o /tmp/setup http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.sh<enter><wait><wait>",
+        "export NAME_SERVER='{{ user `NAME_SERVER` }}'<enter>",
+        "export HTTP_PROXY='{{ user `HTTP_PROXY` }}'<enter>",
+        "export HTTPS_PROXY='{{ user `HTTPS_PROXY` }}'<enter>",
+        "export NO_PROXY='{{ user `NO_PROXY` }}'<enter>",
         "bsdinstall script /tmp/setup<enter>"
       ]
     }
@@ -73,6 +84,7 @@
       "scripts": [
         "scripts/vagrant.sh",
         "scripts/virtualbox.sh",
+        "scripts/admintools.sh",
         "scripts/cleanup.sh"
       ]
     }

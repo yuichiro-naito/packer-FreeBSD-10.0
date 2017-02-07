@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. /root/.profile
+
 pkg install -y sudo lv
 
 patch -d /usr/local/etc <<__EOS__

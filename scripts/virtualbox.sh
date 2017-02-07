@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. /root/.profile
+
 pkg install -y virtualbox-ose-additions
 
 cat <<'EOF' >> /etc/rc.conf
