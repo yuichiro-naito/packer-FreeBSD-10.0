@@ -1,0 +1,80 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "iso_url": "http://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/ISO-IMAGES/11.0/FreeBSD-11.0-RELEASE-amd64-disc1.iso",
+      "iso_checksum": "08b12f2dc378f7a61b5469219824c74a2f9faef580acc85ffab45365df79872d",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "1000s",
+      "guest_os_type": "FreeBSD_64",
+      "hard_drive_interface": "sata",
+      "iso_interface": "sata",
+      "headless": "true",
+      "shutdown_command": "echo 'shutdown -p now' | sudo su -",
+      "boot_wait": "10s",
+      "http_directory": "http",
+      "disk_size": 20480,
+      "vboxmanage": [
+        [
+          "storagectl",
+          "{{.Name}}",
+          "--name",
+          "SATA Controller",
+          "--hostiocache",
+          "on"
+	],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "1024"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--x2apic",
+          "on"
+        ]
+      ],
+
+      "boot_command": [
+        "<esc><wait>",
+        "load geom_mbr<enter>",
+        "load zfs<enter>",
+        "boot -s<enter>",
+        "<wait5><wait5><wait>",
+        "/bin/sh<enter>",
+        "mdmfs -s 20m md1 /tmp<enter>",
+        "mdmfs -s 20m md2 /mnt<enter>",
+        "dhclient -l /tmp/dhclient.lease.em0 em0<enter><wait5>",
+        "fetch -o /tmp/setup http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.sh<enter><wait><wait>",
+        "bsdinstall script /tmp/setup<enter>"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "./builds/freebsd-11.0-amd64.box",
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "scripts": [
+        "scripts/vagrant.sh",
+        "scripts/virtualbox.sh",
+        "scripts/cleanup.sh"
+      ]
+    }
+  ]
+}
