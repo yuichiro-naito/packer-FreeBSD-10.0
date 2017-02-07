@@ -73,6 +73,7 @@
       "scripts": [
         "scripts/vagrant.sh",
         "scripts/virtualbox.sh",
+        "scripts/admintools.sh",
         "scripts/cleanup.sh"
       ]
     }
